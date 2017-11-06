@@ -1,5 +1,8 @@
 # ece5470project
 
+Need to download
+https://www.imagemagick.org/script/index.php
+
 First run ./image_script to setup working directory.
 Specify with argument 'rm' to resize and remove duplicate images.
 Otherwise the script will only resize.

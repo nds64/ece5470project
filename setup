@@ -1,0 +1,51 @@
+#!/bin/bash
+
+FISHDIR=re_FishImages/re_fish_image
+MASKDIR=re_FishImages/re_mask_image
+
+# Check if previous resized images already exists
+if [ -d "re_FishImages" ]; then
+    echo "Deleting previous images"
+    rm -rf "re_FishImages"
+fi
+
+echo "Copying and renaming new directories and files"
+cp -R FishImages re_FishImages
+cd re_FishImages 
+mv fish_image re_fish_image
+mv mask_image re_mask_image
+
+if [ $1 = "1" ]; then
+	for k in */; do
+		cd ${k}
+		for i in */; do
+			echo "Resizing and removing duplicate images in ${i}"
+			cp -R ${i} re_${i}
+			cd re_${i}
+			for j in $( ls *.png); do 
+				convert $j -resize 40x40\! ${j:0:17}${j:23:4};		
+			done
+			rm ??????????????????????*
+			cd ..
+			rm -r ${i}
+		done
+		cd ..
+	done
+else
+	for k in */; do
+		cd ${k}
+		for i in */; do
+			echo "Resizing images in ${i}"
+			cp -R ${i} re_${i}
+			cd re_${i}
+			for j in $( ls *.png); do 
+				convert $j -resize 40x40\! ${j};		
+			done
+			cd ..
+			rm -r ${i}
+		done
+		cd ..
+	done
+fi
+
+#convert $FISHDIR/re_fish_02/re_fish_003726315873_14374.png $MASKDIR/re_mask_02/re_mask_003726315873_14374.png -fx "(u[0]*u[1])" image.jpg

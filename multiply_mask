@@ -1,0 +1,30 @@
+#!/bin/bash
+
+cwd=$(pwd)
+FISHDIR=${cwd}/re_FishImages/re_fish_image
+MASKDIR=${cwd}/re_FishImages/re_mask_image
+COMBDIR=${cwd}/re_FishImages/combine_image
+
+cd re_FishImages
+# Check if previous resized images already exists
+if [ -d "combine_image" ]; then
+    echo "Deleting previous images"
+    rm -rf "combine_image"
+fi
+mkdir -p combine_image/comb_02
+mkdir -p combine_image/comb_03
+mkdir -p combine_image/comb_04
+mkdir -p combine_image/comb_05
+cd re_fish_image
+
+for i in */; do
+	echo "Multiplying image in ${i} with mask"
+	cd ${i}
+	for j in $( ls *.png); do 
+		convert $FISHDIR/${i}/${j} $MASKDIR/re_mask${i:7:3}/mask${j:4:23} -fx "(u[0]*u[1])" $COMBDIR/comb${i:7:3}/comb${j:4:23}
+	done
+	cd ..
+done
+cd ${cwd}
+
+

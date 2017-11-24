@@ -11,10 +11,11 @@ import time
 xTr=[]
 current_class=0
 yTr=[]
-FILEPATH='ece5470project/re_FishImages/combine_image/'
+FILEPATH='re_FishImages/re_fish_image/'
 for files in os.listdir(FILEPATH):
 	for image in os.listdir(FILEPATH+files):
 		img = misc.imread(FILEPATH+files+'/'+image)
+		#print img.shape
 		# if xTr==[]:
 		# 	xTr=img
 		# else:
@@ -22,6 +23,7 @@ for files in os.listdir(FILEPATH):
 		xTr.append(img)
 		yTr.append(current_class)
 	current_class+=1
+
 
 with open ('Y.p','w') as f:
 	np.save(f,yTr)
@@ -35,6 +37,7 @@ with open('X.p','r') as f:
 	trX = np.load(f).reshape(-1,3,40,40)
 
 n_examples,w,h,c = np.asarray(trX).shape
+
 p = np.random.permutation(n_examples)
 
 p = np.random.permutation(len(trX))
@@ -103,7 +106,7 @@ s=time.time()
 #print trX
 #print trY
 
-for i in range(20):
+for i in range(10):
 	cost = 0.
 	num_batches = n_examples // batch_size
 	for k in range(num_batches):
@@ -130,3 +133,8 @@ print "accuracy ", acc
 print "batch size",batch_size
 print "optimizer", "Adam"
 print  "parameters", model.parameters
+test_example=trX[0].reshape(1,-1,40,40)
+print test_example
+model.forward(test_example)
+print model.out1[0][0]
+print model.out2[0][0]

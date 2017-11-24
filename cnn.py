@@ -23,17 +23,21 @@ class basicCNN(nn.Module):
 			super(basicCNN,self).__init__()
 			self.conv1 = nn.Conv2d(3, 5, 3)
 			self.conv2 = nn.Conv2d(5, 10, 3)
-			self.fc1 = nn.Linear(640, 120)
-			self.fc2 = nn.Linear(120, 84)
-			self.fc3 = nn.Linear(84, 4)
+			self.fc1 = nn.Linear(640, 100)
+			self.fc2 = nn.Linear(100, 4)
+			self.out1=None
+			self.out2=None
 	
 	def forward(self, x):
 		out=F.max_pool2d(F.relu(self.conv1(x)),(2,2))
+		self.out1=out
 		out=F.max_pool2d(F.relu(self.conv2(out)),2)
+		self.out2=out
 		out=out.view(-1,self.num_flat_features(out))
 		out=F.relu(self.fc1(out))
-		out=F.relu(self.fc2(out))
-		out=self.fc3(out)
+		out=self.fc2(out)
+		#out=F.relu(self.fc2(out))
+		#out=self.fc3(out)
 		return out
 
 	def num_flat_features(self, x):

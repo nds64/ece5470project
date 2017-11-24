@@ -106,7 +106,7 @@ s=time.time()
 #print trX
 #print trY
 
-for i in range(10):
+for i in range(5):
 	cost = 0.
 	num_batches = n_examples // batch_size
 	for k in range(num_batches):
@@ -133,8 +133,12 @@ print "accuracy ", acc
 print "batch size",batch_size
 print "optimizer", "Adam"
 print  "parameters", model.parameters
-test_example=trX[0].reshape(1,-1,40,40)
+test_example=trX[1:2]
 print test_example
 model.forward(test_example)
 print model.out1[0][0]
 print model.out2[0][0]
+
+from matplotlib import pyplot as plt
+plt.imshow(model.out1[0][0], interpolation='nearest')
+plt.show()
